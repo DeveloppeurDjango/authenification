@@ -1,0 +1,99 @@
+{% load static %}
+
+<div id="overlayer"></div>
+<div class="loader">
+  <div class="spinner-border text-primary" role="status">
+    <span class="sr-only">Loading...</span>
+  </div>
+</div>
+
+<div class="site-wrap">
+  <div class="site-mobile-menu site-navbar-target">
+    <div class="site-mobile-menu-header">
+      <div class="site-mobile-menu-close mt-3">
+        <span class="icon-close2 js-menu-toggle"></span>
+      </div>
+    </div>
+    <div class="site-mobile-menu-body"></div>
+  </div>
+
+  <header class="site-navbar js-sticky-header site-navbar-target" role="banner">
+    <div class="container">
+      <div class="row align-items-center">
+        <div class="col-6 col-xl-2">
+          <h1 class="mb-0 site-logo"><a href="index.html" class="h2 mb-0">AgenceConnect<span class="text-primary"></span></a></h1>
+        </div>
+
+        <div class="col-12 col-md-10 d-none d-xl-block">
+          <nav class="site-navigation position-relative text-right" role="navigation">
+            <ul class="site-menu main-menu js-clone-nav mr-auto d-none d-lg-block">
+              <li>
+                <a href="{% url 'home' %}" class="nav-link">Accueil</a>
+              </li>
+              <li class="has-children">
+                <a href="#about-section" class="nav-link">Compte</a>
+                <ul class="dropdown">
+                  <li>
+                    <a href="{% url 'chefagence' %}" class="nav-link">Chef d'Agence</a>
+                  </li>
+                  <li>
+                    <a href="{% url 'page_access' %}" class="nav-link">Comptable</a>
+                  </li>
+                  <li>
+                    <a href="{% url 'page_access' %}" class="nav-link">Chefs Employés</a>
+                  </li>
+                </ul>
+              </li>
+
+              <li>
+                <a href="{% url 'communique' %}" class="nav-link">Communiqués</a>
+              </li>
+              <li>
+                <a href="{% url 'contact' %}" class="nav-link">Contact</a>
+              </li>
+            </ul>
+          </nav>
+        </div>
+
+        <div class="col-6 d-inline-block d-xl-none ml-md-0 py-3" style="position: relative; top: 3px;">
+          <a href="#" class="site-menu-toggle js-menu-toggle float-right"><span class="icon-menu h3"></span></a>
+        </div>
+      </div>
+    </div>
+  </header>
+  <div class="site-blocks-cover overlay" style="background-image: url({% static 'images/hero_2.jpg' %});" data-aos="fade" id="home-section">
+    <div class="container">
+      <div class="row align-items-center justify-content-center">
+        <div class="col-md-10 mt-lg-5 text-center">
+          <div class="single-text owl-carousel">
+            <div class="slide">
+              <h1 class="text-uppercase" data-aos="fade-up">Sécurisez votre retraite avec nous!</h1>
+              <p class="mb-5 desc" data-aos="fade-up" data-aos-delay="100">Notre mission de garantir la sécurité financière des retraités en leur offrant des solutions de paiement fiables et stables</p>
+              <div data-aos="fade-up" data-aos-delay="100">
+                <a href="#" target="_blank" class="btn btn-primary mr-2 mb-2">Get In Touch</a>
+              </div>
+            </div>
+
+            <div class="slide">
+              <h1 class="text-uppercase" data-aos="fade-up">La caisse de confiance pour votre pension!</h1>
+              <p class="mb-5 desc" data-aos="fade-up" data-aos-delay="100">notre réputation d'intégrité et de fiabilité en tant que prestataire de services de paiement des retraités, offrant ainsi une solution de confiance pour leur pension.</p>
+              <div data-aos="fade-up" data-aos-delay="100">
+                <a href="#" target="_blank" class="btn btn-primary mr-2 mb-2">Get In Touch</a>
+              </div>
+            </div>
+
+            <div class="slide">
+              <h1 class="text-uppercase" data-aos="fade-up">Fidèles à nos retraités, chaque jour!</h1>
+              <p class="mb-5 desc" data-aos="fade-up" data-aos-delay="100">notre engagement continu envers nos retraités, affirmant notre détermination à les soutenir jour après jour dans leur vie après la retraite</p>
+              <div data-aos="fade-up" data-aos-delay="100">
+                <a href="#" target="_blank" class="btn btn-primary mr-2 mb-2">Get In Touch</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <a href="#next" class="mouse smoothscroll"><span class="mouse-icon"><span class="mouse-wheel"></span></span></a>
+  </div>
+</div>

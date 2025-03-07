@@ -1,0 +1,57 @@
+<!-- contact.html -->
+
+{% extends 'base.html' %}
+{% block content %}
+<section class="site-section bg-light" id="contact-section" data-aos="fade">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <form method="post" class="p-5 bg-white">
+                    {% csrf_token %}
+                    <h2 class="h4 text-black mb-5">Nous contacter !</h2>
+    
+                    {{ form.non_field_errors }}
+    
+                    <div class="row form-group">
+                        <div class="col-md-6">
+                            <label class="text-black" for="id_nom">Nom</label>
+                            {{ form.nom }}
+                        </div>
+                        <div class="col-md-6">
+                            <label class="text-black" for="id_prenoms">Prénoms</label>
+                            {{ form.prenoms }}
+                        </div>
+                    </div>
+    
+                    <div class="row form-group">
+                        <div class="col-md-12">
+                            <label class="text-black" for="id_email">Email</label>
+                            {{ form.email }}
+                        </div>
+                    </div>
+    
+                    <div class="row form-group">
+                        <div class="col-md-12">
+                            <label class="text-black" for="id_sujet">Sujet</label>
+                            {{ form.sujet }}
+                        </div>
+                    </div>
+    
+                    <div class="row form-group">
+                        <div class="col-md-12">
+                            <label class="text-black" for="id_message">Message</label>
+                            {{ form.message }}
+                        </div>
+                    </div>
+    
+                    <div class="row form-group">
+                        <div class="col-md-12">
+                            <input type="submit" value="Envoyer" class="btn btn-primary btn-md text-white" />
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock content %}

@@ -1,0 +1,174 @@
+
+
+{% extends 'base_Branch_manage.html' %}
+
+{% block content_Branch_manage %}
+  <!-- partial -->
+  <div class="main-panel">
+    <div class="content-wrapper">
+      <div class="row">
+        <div class="col-12 grid-margin stretch-card">
+          <div class="card">
+            <div class="card-body">
+              <div class="container">
+                <div class="p-5 bg-white">
+                  <div class="row">
+                    <div class="col">
+                      <div class="form-group">
+                        <input id="search" class="form-control" type="search" placeholder="Search..." />
+                      </div>
+                      <h2 class="col-12 text-center">Liste des retraités</h2>
+                      {% if operate %}
+                        <div class="table-responsive">
+                          <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th scope="col">N° ORDRE</th>
+                                    <th scope="col">N° TITRE</th>
+                                    <th scope="col">BÉNÉFICIAIRE</th>
+                                    <th scope="col">NNI</th>
+                                    <th scope="col">DATE RETRAITE</th>
+                                    <th scope="col">VILLE</th>
+                                    <th scope="col">AGE</th>
+                                    <th scope="col">TELEPHONE</th>
+                                    <th scope="col">DATE D'ENREGISTREMENT</th>
+                          
+                                </tr>
+                            </thead>
+                            <tbody id="myTable">
+                              {% for item in operate %}
+                              <tr>
+                                  <td>{{ item.ordre }}</td>
+                                  <td>{{ item.titre }}</td>
+                                  <td>{{ item.beneficiaire }}</td>
+                                  <td>{{ item.nni }}</td>
+                                  <td>{{ item.date_retraite }}</td>
+                                  <td>{{ item.ville }}</td>
+                                  <td>{{ item.age }}</td>
+                                  <td>{{ item.telephone }}</td>
+                                  <td>{{ item.created_at }}</td>
+                                  <td>
+                                    <a href="{% url 'modification_operation' item.id %}" class="btn btn-primary btn-md text-whites">
+                                      <i class="bi bi-pencil"></i> <!-- Icône Bootstrap pour Modifier -->
+                                    </a>
+                                    <button type="button" class="btn btn-danger btn-md text-whites" data-toggle="modal" data-target="#deleteModal{{ item.id }}">
+                                      <i class="bi bi-trash"></i> <!-- Icône Bootstrap pour Supprimer -->
+                                    </button>
+                                  </td>
+                              </tr>
+                              {% endfor %}
+                          </tbody>
+                            {% if operate.has_other_pages %}
+                              <nav aria-label="Page navigation">
+                                <ul class="pagination justify-content-center">
+                                  {% if operate.has_previous %}
+                                    <li class="page-item">
+                                      <a class="page-link" href="?page={{ operate.previous_page_number }}" tabindex="-1">Précédent</a>
+                                    </li>
+                                  {% endif %}
+                                  {% for num in operate.paginator.page_range %}
+                                    <li class="page-item {% if num == operate.number %}{% endif %}">
+                                      <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+                                    </li>
+                                  {% endfor %}
+
+                                  {% if operate.has_next %}
+                                    <li class="page-item">
+                                      <a class="page-link" href="?page={{ operate.next_page_number }}">Suivant</a>
+                                    </li>
+                              
+                           
+                                
+                                  {% endif %}
+                                </ul>
+                              </nav >
+                            {% endif %}
+                          </table>
+                        </div>
+                        <div class="col mt-4 text-center">
+                            <div style="font-style: italic;">
+                              <p style="display: inline-block;">
+                                <button type="button" class="btn btn-danger btn-md text-whites" data-toggle="modal" data-target="#deleteAllModal">Supprimer toutes les Opérations</button>
+                              </p>
+                            </div>
+                          </div>
+                      {% else %}
+                      
+                        <h2 class="col-12 text-center">Pas d'enregistrement</h2>
+                      {% endif %}
+                    </div>
+                  </div>
+                  <div class="row">
+                
+                     
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal de confirmation de suppression -->
+  {% for item in operate %}
+    <div class="modal fade" id="deleteModal{{ item.id }}" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel{{ item.id }}" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="deleteModalLabel{{ item.id }}">Confirmation de suppression</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          </div>
+          <div class="modal-body">Êtes-vous sûr de vouloir supprimer ce retraité ?</div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+            <form action="{% url 'supprimer_retraite_visualisation' item.id %}" method="post" class="d-inline">
+              {% csrf_token %}
+              <button type="submit" class="btn btn-danger">Supprimer</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  {% endfor %}
+
+
+<!-- Modal de confirmation de suppression de toutes les opérations -->
+<div class="modal fade" id="deleteAllModal" tabindex="-1" role="dialog" aria-labelledby="deleteAllModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="deleteAllModalLabel">Confirmation de suppression</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      </div>
+      <div class="modal-body">Êtes-vous sûr de vouloir supprimer tous les retraités ? <br> Attention! Cette action est irréversible</div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+        <form action="{% url 'supprimer_tous_retraités' %}" method="post" class="d-inline">
+          {% csrf_token %}
+          <button type="submit" class="btn btn-danger">Supprimer</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+{% endblock %}
+
+{% block scripts %}
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script>
+    // Votre script qui utilise jQuery
+    $(document).ready(function () {
+      $('#search').on('keyup', function () {
+        var value = $(this).val().toLowerCase()
+        $('#myTable tr').filter(function () {
+          $(this).toggle($(this).text().toLocaleLowerCase().indexOf(value) > -1)
+        })
+      })
+    })
+  </script>
+{% endblock %}

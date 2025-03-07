@@ -1,0 +1,161 @@
+{% extends 'base_Branch_manage.html' %}
+
+{% block content_Branch_manage %}
+    
+<!-- partial -->
+<div class="main-panel">        
+    <div class="content-wrapper">
+        <div class="row">
+            <div class="col-md-4 grid-margin stretch-card">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title">Ajouter une opération</h4>
+                        <p class="card-description">
+                            Commencé par entrée le Numero Titre 
+                        </p>
+                        <div class="forms-sample mb-4">
+                            <div class="form-group row mb-4">
+                                <form action="" class="p-5 bg-white" method="POST">
+                                    {% csrf_token %}
+                                    {{ form.as_p }}
+                                    <input type="submit" class="btn btn-primary btn-md text-whites mt-4" value="Ajouter">
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-8 grid-margin stretch-card">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title">Aperçu des Opérations</h4>
+                        <p class="card-description">
+                            Visualisation des trois dernières operations
+                        </p>
+                        {% if operate %}
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">N° ORDRE</th>
+                                        <th scope="col">N° TITRE</th>
+                                        <th scope="col">BÉNÉFICIAIRE</th>
+                                        <th scope="col">NNI</th>
+                                        <th scope="col">MONTANT</th>
+                                        <th scope="col">DATE D'OPÉRATION</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="myTable">
+                                    {% for item in operate %}
+                                    <tr>
+                                        <td>{{ item.ordre }}</td>
+                                        <td>{{ item.Numero_titre }}</td>
+                                        <td>{{ item.beneficiaire }}</td>
+                                        <td>{{ item.nni }}</td>
+                                        <td>{{ item.montant }}</td>
+                                        <td>{{ item.date_operation }}</td>
+                                        <td>
+                                            <a href="{% url 'modification_operation' item.id %}" class="btn btn-primary btn-md text-whites">
+                                              <i class="bi bi-pencil"></i> <!-- Icône Bootstrap pour Modifier -->
+                                            </a>
+                                            <button type="button" class="btn btn-danger btn-md text-whites" data-toggle="modal" data-target="#deleteModal{{ item.id }}">
+                                              <i class="bi bi-trash"></i> <!-- Icône Bootstrap pour Supprimer -->
+                                            </button>
+                                          </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                        <button id="voir-operation-btn" class="btn btn-primary btn-md text-whites mt-4">Visualiser</button>
+                        {% else %}
+                        <h2 class="col-12 text-center">Pas d'enregistrement</h2>
+                        {% endif %}
+                       
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- content-wrapper ends -->
+    <!-- partial:../../partials/_footer.html -->
+    <footer class="footer">
+        <div class="d-sm-flex justify-content-center justify-content-sm-between">
+            <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">Premium <a href="https://www.bootstrapdash.com/" target="_blank">Bootstrap admin template</a> from BootstrapDash.</span>
+            <span class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center">Copyright © 2021. All rights reserved.</span>
+        </div>
+    </footer>
+    <!-- partial -->
+</div>
+<!-- main-panel ends -->
+</div>
+
+<!-- Modal de confirmation de suppression -->
+{% for item in operate %}
+<div class="modal fade" id="deleteModal{{ item.id }}" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel{{ item.id }}" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteModalLabel{{ item.id }}">Confirmation de suppression</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Êtes-vous sûr de vouloir supprimer cette opération ?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+                <form action="{% url 'suppression_operation' item.id %}" method="post" class="d-inline">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger">Supprimer</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endfor %}
+
+{% endblock content_Branch_manage %}
+
+{% block scripts %}
+<script>
+    document.getElementById('voir-operation-btn').addEventListener('click', function() {
+        window.location.href = "{% url 'voir_operation' %}";
+    });
+</script>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+    $(document).ready(function() {
+        $('#id_Numero_titre').change(function() {
+            var numero_titre_id = $(this).val();
+            $.ajax({
+                url: "{% url 'afficherchampsauto' %}",
+                data: {
+                    'Numero_titre': numero_titre_id
+                },
+                dataType: 'json',
+                success: function(data) {
+                    $('#id_beneficiaire').val(data.beneficiaire);
+                    $('#id_nni').val(data.nni);
+                }
+            });
+        });
+    });
+</script>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    // Votre script qui utilise jQuery
+    $(document).ready(function(){
+        $('#search').on('keyup', function(){
+            var value = $(this).val().toLowerCase();
+            $('#myTable tr').filter(function(){
+                $(this).toggle($(this).text().toLocaleLowerCase().indexOf(value) > -1);
+            });
+        });
+    });
+</script>
+{% endblock scripts %}

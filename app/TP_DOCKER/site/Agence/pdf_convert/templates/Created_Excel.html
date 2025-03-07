@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    
+    <!-- CSS personnalisé -->
+    <link rel="stylesheet" href="/static/css/bootstrap/bootstrap.css">
+    <link rel="stylesheet" href="/static/static/css/vertical-layout-light/style.css">
+    
+
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery.js"></script>
+
+    <title>PDF</title>
+</head>
+<body>
+
+  <section class="site-section bg-light" id="contact-section" data-aos="fade">
+    <div class="container">
+      <div class="p-5 bg-white">
+        <div class="row">
+          <div class="col">
+     
+            <h2 class="col-12 text-center">Liste des Opérations</h2>
+  
+              <div class="table-responsive">
+                <table class="table table-hover">
+                  <thead>
+                    <tr>
+                      <th scope="col" class="col-sm-1">N° ORDRE</th>
+                      <th scope="col" class="col-sm-2">N° TITRE</th>
+                      <th scope="col" class="col-sm-4">BÉNÉFICIAIRE</th>
+                      <th scope="col" class="col-sm-2">NNI</th>
+                      <th scope="col" class="col-sm-1">MONTANT</th>
+                      <th scope="col" class="col-sm-2">DATE D'OPÉRATION</th>
+                    </tr>
+                  </thead>
+                  <tbody id="myTable">
+                    {% for item in operate %}
+                      <tr>
+                        <td>{{ item.ordre }}</td>
+                        <td>{{ item.Numero_titre }}</td>
+                        <td>{{ item.beneficiaire }}</td>
+                        <td>{{ item.nni }}</td>
+                        <td>{{ item.montant }}</td>
+                        <td>{{ item.date_operation }}</td>
+                      </tr>
+                    {% endfor %}
+                    <tr>
+                      <th scope="col">TOTAL</th>
+                      <th scope="col"></th>
+                      <th scope="col"></th>
+                      <th scope="col"></th>
+                      <th scope="col">{{ total_montant }}</th>
+                      <th scope="col"></th>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+           
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </section>
+  <a href="{% url 'export_excel' %}">Exporter vers Excel</a>
+
+</body>
+</html>
